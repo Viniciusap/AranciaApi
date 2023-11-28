@@ -1,5 +1,7 @@
-﻿namespace Arancia_Api.Modelos;
-public class Projetos
+﻿namespace Arancia_Api.Modelos
 {
-    public string Nome { get; set; }
+    public class Projetos
+    {
+        public string Nome { get; set; }
+    }
 }
