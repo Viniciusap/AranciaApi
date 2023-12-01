@@ -1,0 +1,20 @@
+﻿using Api_Arancia.Modelos;
+using Microsoft.AspNetCore.Mvc;
+
+namespace Api_Arancia.Controllers;
+[ApiController]
+[Route("[controller]")]
+
+public class EmpresaControllers : ControllerBase
+{
+
+    private static List<Empresa> empresas = new List<Empresa>();
+    [HttpPost]
+    public void AdicionaEmpresa([FromBody] Empresa empresa)
+    {
+        empresas.Add(empresa);
+        Console.WriteLine(empresa.Nome);
+    }
+    
+
+}
