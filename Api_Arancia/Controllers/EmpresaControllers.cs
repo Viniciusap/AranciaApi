@@ -10,8 +10,6 @@ public class EmpresaController : ControllerBase
     private static readonly List<Empresa> empresas = new List<Empresa>();
     private static int id = 0;
 
-    private static List<Empresa> empresas = new List<Empresa>();
-
     [HttpPost]
     public void AdicionaEmpresa([FromBody] Empresa empresa)
     {
