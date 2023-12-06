@@ -1,6 +1,13 @@
+using Api_Arancia.Data;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
 var connectionString = builder.Configuration.GetConnectionString("ApiConnection");
+
+builder.Services.AddDbContext<EmpresaContext>(opts => opts.UseMySql(builder.Configuration.GetConnectionString("ApiConnection"), ServerVersion.AutoDetect(connectionString)));
 
 // Add services to the container.
 

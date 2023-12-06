@@ -1,4 +1,7 @@
-﻿using Api_Arancia.Modelos;
+﻿using Api_Arancia.Data;
+using Api_Arancia.Data.Dtos;
+using Api_Arancia.Modelos;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api_Arancia.Controllers;
@@ -7,15 +10,38 @@ namespace Api_Arancia.Controllers;
 
 public class EmpresaController : ControllerBase
 {
-    private static readonly List<Empresa> empresas = new List<Empresa>();
-    private static int id = 0;
+    private EmpresaContext _context;
+    private IMapper _mapper;
+    
+    public EmpresaController(EmpresaContext context, IMapper mapper)
+    {
+        _context = context;
+        _mapper = mapper;
+    }
 
     [HttpPost]
-    public void AdicionaEmpresa([FromBody] Empresa empresa)
+    public IActionResult AdicionaEmpresa([FromBody] Empresa empresaDto)
     {
-        empresas.Add(empresa);
-        Console.WriteLine(empresa.Nome);
+        Empresa empresa = _mapper.Map<Empresa>(empresaDto);
+        _context.Empresa.Add(empresa);
+        _context.SaveChanges();
+        return CreatedAtAction(nameof(RecuperaEmpresaPorId), new {id = empresa.Id}, empresa);
+       
     }
-    
 
+    [HttpGet]
+    public IEnumerable<ReadEmpresaDto> RecuperaEmpresas([FromQuery] int skip =0, [FromQuery] int take = 50)
+    {
+        return _mapper.Map<List<ReadEmpresaDto>>(_context.Empresa.Skip(skip).Take(take));
+    }
+      
+
+    [HttpGet("{id}")]
+    public IActionResult RecuperaEmpresaPorId(int id)
+    {
+        var empresa = _context.Empresa.FirstOrDefault(empresa => empresa.Id == id);
+        if (empresa == null) return NotFound();
+        var empresaDto = _mapper.Map<ReadEmpresaDto>(empresa);
+        return Ok(empresaDto);
+    }
 }
