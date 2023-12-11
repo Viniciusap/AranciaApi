@@ -12,5 +12,7 @@ public class EmpresaContext : DbContext
     }
 
     public DbSet<Empresa> Empresa { get; set; }
+    public DbSet<Projetos> Projetos { get; set; }
+    public DbSet<Desenvolvedores> Desenvolvedores { get; set; }
 
 }

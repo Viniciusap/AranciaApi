@@ -44,4 +44,30 @@ public class EmpresaController : ControllerBase
         var empresaDto = _mapper.Map<ReadEmpresaDto>(empresa);
         return Ok(empresaDto);
     }
+
+    [HttpPut("{id}")]
+    public IActionResult AtualizaEmpresa(int id, [FromBody] UpdateEmpresaDto EmpresaDto)
+    {
+        Empresa empresa = _context.Empresa.FirstOrDefault(empresa => empresa.Id == id);
+        if (empresa == null)
+        {
+            return NotFound();
+        }
+        _mapper.Map(EmpresaDto, empresa);
+        _context.SaveChanges();
+        return NoContent();
+    }
+
+    [HttpDelete("{id}")]
+    public IActionResult DeletaEmpresa(int id)
+    {
+        Empresa empresa = _context.Empresa.FirstOrDefault(empresa => empresa.Id == id);
+        if (empresa == null)
+        {
+            return NotFound();
+        }
+        _context.Remove(empresa);
+        _context.SaveChanges();
+        return NoContent();
+    }
 }
