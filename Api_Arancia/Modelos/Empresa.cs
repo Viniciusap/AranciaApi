@@ -9,4 +9,7 @@ public class Empresa
     public int Id { get; set; }
     [Required]
     public string Nome { get; set; }
+
+    public virtual ICollection<Projetos> Projetos { get; set;}
+   
 }

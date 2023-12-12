@@ -54,13 +54,30 @@ namespace Api_Arancia.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<string>("Nome")
-                        .IsRequired()
-                        .HasColumnType("longtext");
+                    b.Property<int>("EmpresaId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("EmpresaId");
+
                     b.ToTable("Projetos");
+                });
+
+            modelBuilder.Entity("Api_Arancia.Modelos.Projetos", b =>
+                {
+                    b.HasOne("Api_Arancia.Modelos.Empresa", "Empresa")
+                        .WithMany("Projetos")
+                        .HasForeignKey("EmpresaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Empresa");
+                });
+
+            modelBuilder.Entity("Api_Arancia.Modelos.Empresa", b =>
+                {
+                    b.Navigation("Projetos");
                 });
 #pragma warning restore 612, 618
         }

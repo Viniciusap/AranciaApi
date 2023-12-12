@@ -2,5 +2,5 @@
 
 public class UpdateProjetosDto
 {
-    public string Nome { get; set; }
+    public int Id { get; set; }
 }

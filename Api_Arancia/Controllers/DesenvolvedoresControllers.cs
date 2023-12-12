@@ -27,7 +27,7 @@ public class DesenvolvedoresController : ControllerBase
         Desenvolvedores Desenvolvedor = _mapper.Map<Desenvolvedores>(DesenvolvedoresDto);
         _context.Desenvolvedores.Add(Desenvolvedor);
         _context.SaveChanges();
-        return CreatedAtAction(nameof(RecuperaDesenvolvedoresPorId), new { Id = Desenvolvedor.Id }, DesenvolvedoresDto);
+        return CreatedAtAction(nameof(RecuperaDesenvolvedoresPorId), new { Desenvolvedor.Id }, DesenvolvedoresDto);
     }
 
     [HttpGet]
@@ -39,7 +39,7 @@ public class DesenvolvedoresController : ControllerBase
     [HttpGet("{id}")]
     public IActionResult RecuperaDesenvolvedoresPorId(int id)
     {
-        Desenvolvedores Desenvolvedor = _context.Desenvolvedores.FirstOrDefault(Desenvolvedor => Desenvolvedor.Id == id);
+        var Desenvolvedor = _context.Desenvolvedores.FirstOrDefault(Desenvolvedor => Desenvolvedor.Id == id);
         if (Desenvolvedor != null)
         {
             ReadDesenvolvedoresDto DesenvolvedoresDto = _mapper.Map<ReadDesenvolvedoresDto>(Desenvolvedor);
@@ -51,7 +51,7 @@ public class DesenvolvedoresController : ControllerBase
     [HttpPut("{id}")]
     public IActionResult AtualizaDesenvolvedor(int id, [FromBody] UpdateDesenvolvedoresDto DesenvolvedoresDto)
     {
-        Desenvolvedores Desenvolvedores = _context.Desenvolvedores.FirstOrDefault(Desenvolvedor => Desenvolvedor.Id == id);
+        var Desenvolvedores = _context.Desenvolvedores.FirstOrDefault(Desenvolvedor => Desenvolvedor.Id == id);
         if (Desenvolvedores == null)
         {
             return NotFound();

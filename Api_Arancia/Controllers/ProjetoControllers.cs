@@ -22,12 +22,13 @@ public class ProjetosController : ControllerBase
 
 
     [HttpPost]
-    public IActionResult AdicionaProjeto([FromBody] CreateProjetosDto ProjetosDto)
+    public IActionResult AdicionaProjeto(CreateProjetosDto ProjetosDto)
     {
-        Projetos Projeto = _mapper.Map<Projetos>(ProjetosDto);
-        _context.Projetos.Add(Projeto);
+        Projetos projeto = _mapper.Map<Projetos>(ProjetosDto);
+        _context.Projetos.Add(projeto);
         _context.SaveChanges();
-        return CreatedAtAction(nameof(RecuperaProjetosPorId), new { Id = Projeto.Id }, ProjetosDto);
+        return CreatedAtAction(nameof(RecuperaProjetosPorId), 
+            new { empresaId = projeto.EmpresaId, desenvolvedoresId = projeto.DesenvolvedoresId }, projeto);
     }
 
     [HttpGet]
@@ -36,41 +37,37 @@ public class ProjetosController : ControllerBase
         return _mapper.Map<List<ReadProjetosDto>>(_context.Projetos.ToList());
     }
 
-    [HttpGet("{id}")]
-    public IActionResult RecuperaProjetosPorId(int id)
+    [HttpGet("{empresaId}/{desenvolvedoresId}")]
+    public IActionResult RecuperaProjetosPorId(int empresaId, int desenvolvedoresId)
     {
-        Projetos Projeto = _context.Projetos.FirstOrDefault(Projeto => Projeto.Id == id);
-        if (Projeto != null)
+        var projeto = _context.Projetos.FirstOrDefault
+            (projeto => projeto.EmpresaId == empresaId && projeto.DesenvolvedoresId == desenvolvedoresId);
+        if (projeto != null)
         {
-            ReadProjetosDto ProjetosDto = _mapper.Map<ReadProjetosDto>(Projeto);
+            ReadProjetosDto ProjetosDto = _mapper.Map<ReadProjetosDto>(projeto);
             return Ok(ProjetosDto);
         }
         return NotFound();
     }
 
-    [HttpPut("{id}")]
-    public IActionResult AtualizaProjeto(int id, [FromBody] UpdateProjetosDto ProjetosDto)
+    [HttpPut("{empresaId}/{desenvolvedoresId}")]
+    public IActionResult AtualizaProjeto(int empresaId, int desenvolvedoresId, [FromBody] UpdateProjetosDto ProjetosDto)
     {
-        Projetos Projetos = _context.Projetos.FirstOrDefault(Projeto => Projeto.Id == id);
-        if (Projetos == null)
-        {
-            return NotFound();
-        }
-        _mapper.Map(ProjetosDto, Projetos);
+        var projetos = _context.Projetos
+            .FirstOrDefault(projeto => projeto.EmpresaId == empresaId && projeto.DesenvolvedoresId == desenvolvedoresId);
+        if (projetos == null) return NotFound();
+        _mapper.Map(ProjetosDto, projetos);
         _context.SaveChanges();
         return NoContent();
     }
 
 
-    [HttpDelete("{id}")]
-    public IActionResult DeletaProjetos(int id)
+    [HttpDelete("{empresaId}/{desenvolvedoresId}")]
+    public IActionResult DeletaProjetos(int empresaId, int desenvolvedoresId)
     {
-        Projetos Projeto = _context.Projetos.FirstOrDefault(Projeto => Projeto.Id == id);
-        if (Projeto == null)
-        {
-            return NotFound();
-        }
-        _context.Remove(Projeto);
+        var projeto = _context.Projetos.FirstOrDefault(projeto => projeto.EmpresaId == empresaId && projeto.DesenvolvedoresId == desenvolvedoresId);
+        if (projeto == null) return NotFound();
+        _context.Remove(projeto);
         _context.SaveChanges();
         return NoContent();
     }

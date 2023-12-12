@@ -20,7 +20,9 @@ public class EmpresaController : ControllerBase
     }
 
     [HttpPost]
-    public IActionResult AdicionaEmpresa([FromBody] Empresa empresaDto)
+    [ProducesResponseType(StatusCodes.Status201Created)]
+
+    public IActionResult AdicionaEmpresa([FromBody] CreateEmpresaDto empresaDto)
     {
         Empresa empresa = _mapper.Map<Empresa>(empresaDto);
         _context.Empresa.Add(empresa);
@@ -30,9 +32,10 @@ public class EmpresaController : ControllerBase
     }
 
     [HttpGet]
-    public IEnumerable<ReadEmpresaDto> RecuperaEmpresas([FromQuery] int skip =0, [FromQuery] int take = 50)
+    public IEnumerable<ReadEmpresaDto> RecuperaEmpresas([FromQuery] int skip = 0, [FromQuery] int take = 50)
     {
-        return _mapper.Map<List<ReadEmpresaDto>>(_context.Empresa.Skip(skip).Take(take));
+        return _mapper.Map<List<ReadEmpresaDto>>(_context.Empresa.ToList());
+        
     }
       
 
