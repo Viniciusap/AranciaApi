@@ -22,7 +22,7 @@ public class EmpresaContext : DbContext
         builder.Entity<Projetos>()
             .HasOne(Projeto => Projeto.Desenvolvedores)
             .WithMany(Desenvolvedores => Desenvolvedores.Projetos)
-            .HasForeignKey(Projeto => Projeto.DesenvolvedoresId);
+            .HasForeignKey(Projetos => Projetos.DesenvolvedoresId);
 
     }
 

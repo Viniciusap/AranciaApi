@@ -7,7 +7,8 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 var connectionString = builder.Configuration.GetConnectionString("ApiConnection");
 
-builder.Services.AddDbContext<EmpresaContext>(opts => opts.UseMySql(builder.Configuration.GetConnectionString("ApiConnection"), ServerVersion.AutoDetect(connectionString)));
+builder.Services.AddDbContext<EmpresaContext>(opts => opts.UseLazyLoadingProxies()
+.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
 
 // Add services to the container.
 
