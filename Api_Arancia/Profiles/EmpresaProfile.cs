@@ -9,9 +9,12 @@ public class EmpresaProfile : Profile
     public EmpresaProfile()
     {
         CreateMap<CreateEmpresaDto, Empresa>();
+        CreateMap<Empresa, ReadEmpresaDto>()
+            .ForMember(empresaDto => empresaDto.Projetos,
+            opt => opt.MapFrom(empresa => empresa.Projetos));
         CreateMap<UpdateEmpresaDto, Empresa>();
-        CreateMap<Empresa, UpdateEmpresaDto>();
-        CreateMap<Empresa, ReadEmpresaDto>();
+      
+        
     }
     
 }

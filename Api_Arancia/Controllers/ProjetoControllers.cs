@@ -27,7 +27,7 @@ public class ProjetosController : ControllerBase
         Projetos projeto = _mapper.Map<Projetos>(ProjetosDto);
         _context.Projetos.Add(projeto);
         _context.SaveChanges();
-        return CreatedAtAction(nameof(RecuperaProjetos),
+        return CreatedAtAction(nameof(RecuperaProjetosPorId),
             new { empresaId = projeto.EmpresaId, desenvolvedoresId = projeto.DesenvolvedoresId }, projeto);
     }
 
