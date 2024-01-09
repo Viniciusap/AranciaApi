@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\build\Arancia Api.props" />
+</Project>
